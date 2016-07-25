@@ -8,14 +8,9 @@ import paho.mqtt.client as mqtt
 receiver = RCSwitchReceiver()
 receiver.enableReceive(2)
 
-def on_connect(client, userdata, rc):
-    print("Connected with result code "+str(rc))
-#    client.subscribe("Home/#")
-
 def publish_message():
     # Initialize the client that should connect to the Mosquitto broker
     client = mqtt.Client()
-    client.on_connect = on_connect
     connOK=False
     while(connOK == False):
         try:
