@@ -1,8 +1,9 @@
 
-// A sketch for an Arduino Nano device that detects when a door is opened
+// A sketch for an Arduino Nano device that detects when my front door is opened
 // The door should have a reed switch with NC (normally closed) connected to the Vin wire of the device
-// When the door is opened, the reed switch is closed and the device is started
-// A 32-bit message is then sent via a 433 MHz signal that can be picked up by an appropriate receiver
+// When the door is opened, the reed switch is closed and the device is started. This happens:
+//  1) A photo resistor is read and if it is "dark" a relay connected to a led strip is closed 
+//  2) A 32-bit message is then sent via a 433 MHz signal that can be picked up by an appropriate receiver
 // (a Raspberry Pi in my case).
 // When the door is closed, the reed switch is opened and the device is shut down
 // 
@@ -42,8 +43,8 @@ void setup()
   EEPROM.write(0,42);
   EEPROM.write(1,seqNum);
 
-//  transmitter.enableTransmit(TX_PIN); 
-//  transmitter.setRepeatTransmit(25);
+  transmitter.enableTransmit(TX_PIN); 
+  transmitter.setRepeatTransmit(25);
 
   pinMode(PHOTORESITOR_PIN,INPUT);
   pinMode(RELAY_PIN,OUTPUT);
@@ -55,19 +56,21 @@ void setup()
 bool valueHasBeenSent = false;
 void loop() 
 {
-    int val = analogRead(PHOTORESITOR_PIN);
-    print(val);
-    if (val < 800)
-    {
-      digitalWrite(RELAY_PIN,HIGH);
-    }
-    else
-    {
-      digitalWrite(RELAY_PIN,LOW);      
-    }
-
-    delay(500);
-/*  if (!valueHasBeenSent)
+  // If it's dark, turn on the hall lamp via a relay
+  int val = analogRead(PHOTORESITOR_PIN);
+  print(val);
+  if (val < 800)
+  {
+    digitalWrite(RELAY_PIN,HIGH);
+  }
+  else
+  {
+    digitalWrite(RELAY_PIN,LOW);      
+  }
+  
+  delay(500);
+   
+  if (!valueHasBeenSent)
   {
     // Send the message several times to increase
     // detection by the receiver
@@ -78,7 +81,7 @@ void loop()
     sendDoorOpenSignal(seqNum);
     delay(2000);
     valueHasBeenSent = true;
-  }*/
+  }
 }
 
 void sendDoorOpenSignal(int sequenceNumber)
