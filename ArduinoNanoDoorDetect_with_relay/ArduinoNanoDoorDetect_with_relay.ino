@@ -16,7 +16,7 @@
 
 // Unique ID:s (4 bits, 0-15) for each measurement type so that the receiver
 // understands how to interpret the data on arrival
-#define DOOR_MEASUREMENT_ID 4
+#define DOOR_MEASUREMENT_ID 3
 
 #define TX_PIN 1                     // PWM output pin to use for transmission
 #define PHOTORESITOR_PIN 4
