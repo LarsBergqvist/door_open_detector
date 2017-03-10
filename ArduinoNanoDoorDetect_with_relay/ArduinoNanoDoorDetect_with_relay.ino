@@ -14,17 +14,19 @@
 #include "RCSwitch.h"
 #include <EEPROM.h>
 
+
 // Unique ID:s (4 bits, 0-15) for each measurement type so that the receiver
 // understands how to interpret the data on arrival
 #define DOOR_MEASUREMENT_ID 3
 
-#define TX_PIN 1                     // PWM output pin to use for transmission
-#define PHOTORESITOR_PIN 4
-#define RELAY_PIN 2
+#define TX_PIN 3              // PWM output pin to use for transmission
+#define PHOTORESITOR_PIN 5    // Analog input pin for photo resistor
+#define RELAY_PIN 2           // Digital output pin for relay control pin
 
 // A rolling sequence number for each measurement so that the receiver can handle duplicate data
 // Restarts at 0 after seqNum=15 has been used. Stored in EEPROM between restarts of the device.
 byte seqNum=0;
+
 
 RCSwitch transmitter = RCSwitch();
  
